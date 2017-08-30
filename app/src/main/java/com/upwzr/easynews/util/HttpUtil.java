@@ -24,12 +24,11 @@ public class HttpUtil {
     }
 
     public static Response sendSynchronousOkHttpRequest(String address) {
-        Response response;
         try {
             Request request = new Request.Builder()
                     .url(address)
                     .build();
-            response = client.newCall(request).execute();
+            Response response = client.newCall(request).execute();
             if (response.isSuccessful()) {
                 return response;
             }
