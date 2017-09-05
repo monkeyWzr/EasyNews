@@ -3,74 +3,75 @@ package com.upwzr.easynews.json;
 import com.google.gson.annotations.SerializedName;
 
 /**
+ * News json model
  * Created by wzr on 2017/9/5.
  */
 
 public class News {
     @SerializedName("news_priority_number")
-    public String priority;
+    private String priority;
 
     @SerializedName("news_prearranged_time")
-    public String prearrangedTime;
+    private String prearrangedTime;
 
     @SerializedName("news_id")
-    public String newsId;
+    private String newsId;
 
-    public String title;
+    private String title;
 
     @SerializedName("title_with_ruby")
-    public String titleWithRuby;
+    private String titleWithRuby;
 
     @SerializedName("news_file_ver")
-    public boolean fileVer;
+    private boolean fileVer;
 
     @SerializedName("news_creation_time")
-    public String creationTime;
+    private String creationTime;
 
     @SerializedName("news_preview_time")
-    public String previewTime;
+    private String previewTime;
 
     @SerializedName("news_publication_time")
-    public String publicationTime;
+    private String publicationTime;
 
     @SerializedName("news_publication_status")
-    public boolean publicationStatus;
+    private boolean publicationStatus;
 
     @SerializedName("has_news_web_image")
-    public boolean hasWebImage;
+    private boolean hasWebImage;
 
     @SerializedName("has_news_web_movie")
-    public boolean hasWebMovie;
+    private boolean hasWebMovie;
 
     @SerializedName("has_news_easy_image")
-    public boolean hasEasyImage;
+    private boolean hasEasyImage;
 
     @SerializedName("has_news_easy_movie")
-    public boolean hasEasyMovie;
+    private boolean hasEasyMovie;
 
     @SerializedName("has_news_easy_voice")
-    public boolean hasEasyVoice;
+    private boolean hasEasyVoice;
 
     @SerializedName("news_web_image_uri")
-    public String webImageUri;
+    private String webImageUri;
 
     @SerializedName("news_web_movie_uri")
-    public String webMovieUri;
+    private String webMovieUri;
 
     @SerializedName("news_easy_image_uri")
-    public String easyImageUri;
+    private String easyImageUri;
 
     @SerializedName("news_easy_movie_uri")
-    public String easyMovieUri;
+    private String easyMovieUri;
 
     @SerializedName("news_easy_voice_uri")
-    public String easyVoiceUri;
+    private String easyVoiceUri;
 
     @SerializedName("news_display_flag")
-    public boolean displayFlag;
+    private boolean displayFlag;
 
     @SerializedName("news_web_url")
-    public String webUrl;
+    private String webUrl;
 
     public String getPriority() {
         return priority;
@@ -246,5 +247,33 @@ public class News {
 
     public void setWebUrl(String webUrl) {
         this.webUrl = webUrl;
+    }
+
+    @Override
+    public String toString() {
+        return "News{" +
+                "priority='" + priority + '\'' +
+                ", prearrangedTime='" + prearrangedTime + '\'' +
+                ", newsId='" + newsId + '\'' +
+                ", title='" + title + '\'' +
+                ", titleWithRuby='" + titleWithRuby + '\'' +
+                ", fileVer=" + fileVer +
+                ", creationTime='" + creationTime + '\'' +
+                ", previewTime='" + previewTime + '\'' +
+                ", publicationTime='" + publicationTime + '\'' +
+                ", publicationStatus=" + publicationStatus +
+                ", hasWebImage=" + hasWebImage +
+                ", hasWebMovie=" + hasWebMovie +
+                ", hasEasyImage=" + hasEasyImage +
+                ", hasEasyMovie=" + hasEasyMovie +
+                ", hasEasyVoice=" + hasEasyVoice +
+                ", webImageUri='" + webImageUri + '\'' +
+                ", webMovieUri='" + webMovieUri + '\'' +
+                ", easyImageUri='" + easyImageUri + '\'' +
+                ", easyMovieUri='" + easyMovieUri + '\'' +
+                ", easyVoiceUri='" + easyVoiceUri + '\'' +
+                ", displayFlag=" + displayFlag +
+                ", webUrl='" + webUrl + '\'' +
+                '}';
     }
 }
