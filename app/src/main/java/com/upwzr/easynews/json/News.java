@@ -15,7 +15,7 @@ public class News {
     private String prearrangedTime;
 
     @SerializedName("news_id")
-    private String newsId;
+    private String id;
 
     private String title;
 
@@ -90,11 +90,11 @@ public class News {
     }
 
     public String getNewsId() {
-        return newsId;
+        return id;
     }
 
-    public void setNewsId(String newsId) {
-        this.newsId = newsId;
+    public void setNewsId(String id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -254,7 +254,7 @@ public class News {
         return "News{" +
                 "priority='" + priority + '\'' +
                 ", prearrangedTime='" + prearrangedTime + '\'' +
-                ", newsId='" + newsId + '\'' +
+                ", id='" + id + '\'' +
                 ", title='" + title + '\'' +
                 ", titleWithRuby='" + titleWithRuby + '\'' +
                 ", fileVer=" + fileVer +
