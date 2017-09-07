@@ -13,9 +13,13 @@ import com.google.gson.internal.LinkedHashTreeMap;
 import com.google.gson.reflect.TypeToken;
 import com.upwzr.easynews.json.MonthNews;
 import com.upwzr.easynews.json.News;
+import com.upwzr.easynews.json.NewsWord;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -33,14 +37,153 @@ import static com.google.gson.FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES;
  */
 
 public class EasyNews {
+    public static final String API_BASE = "http://www3.nhk.or.jp/news/easy/";
     public static final String API_TOP_NEWS = "http://www3.nhk.or.jp/news/easy/top-list.json?_=";
     public static final String API_NEWS_LIST = "http://www3.nhk.or.jp/news/easy/news-list.json?_=";
+    public static final String API_DICT = "http://www3.nhk.or.jp/news/easy/%s/%s.out.dic?date=%s";
+    public static final String API_NEWS_CONTENT = "http://www3.nhk.or.jp/news/easy/%s/%s.html";
     public static final String API_KOYOMI = "http://www3.nhk.or.jp/news/json/koyomi.json?date=";
+
 
     private static final String TAG = "EasyNews";
 
-    public static List<News> getTodayNews() {
+    public static class Article {
+        private String title;
+        private String date;
+        private String audio;
+        private String video;
+        private String image;
+        private String content;
+        private Map<String, List<NewsWord>> dict;
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public String getDate() {
+            return date;
+        }
+
+        public void setDate(String date) {
+            this.date = date;
+        }
+
+        public String getAudio() {
+            return audio;
+        }
+
+        public void setAudio(String audio) {
+            this.audio = audio;
+        }
+
+        public String getVideo() {
+            return video;
+        }
+
+        public void setVideo(String video) {
+            this.video = video;
+        }
+
+        public String getImage() {
+            return image;
+        }
+
+        public void setImage(String image) {
+            this.image = image;
+        }
+
+        public String getContent() {
+            return content;
+        }
+
+        public void setContent(String content) {
+            this.content = content;
+        }
+
+        public Map<String, List<NewsWord>> getDict() {
+            return dict;
+        }
+
+        public void setDict(Map<String, List<NewsWord>> dict) {
+            this.dict = dict;
+        }
+
+        @Override
+        public String toString() {
+            return "Article{" +
+                    "title='" + title + '\'' +
+                    ", date='" + date + '\'' +
+                    ", audio='" + audio + '\'' +
+                    ", video='" + video + '\'' +
+                    ", image='" + image + '\'' +
+                    ", content='" + content + '\'' +
+                    ", dict=" + dict +
+                    '}';
+        }
+    }
+
+    public static Article getNewsArticle(String newsId) {
+        String requestUrl = String.format(API_NEWS_CONTENT, newsId, newsId);
+        try {
+            Document doc = Jsoup.connect(requestUrl).get();
+            String content = doc.getElementById("newsarticle").html();
+            String title = doc.select("#newstitle h2").first().html();
+            String date = doc.select("#newstitle p").first().text();
+            String image = doc.select("#mainimg img").first().attr("src");
+//            String video = API_BASE + doc.select("#mainimg p").first().attr("id");
+            String audio = getNewsAudio(newsId);
+            Map<String, List<NewsWord>> dict = getNewsDictionary(newsId);
+            Article article = new Article();
+            article.setContent(content);
+            article.setTitle(title);
+            article.setDate(date);
+            article.setImage(image);
+            article.setAudio(audio);
+            article.setDict(dict);
+            return article;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return null;
+    }
+
+    //TODO: get news image/audio/video resources
+
+    public static String getNewsImage(String newsId) {
+        return null;
+    }
+
+    public static String getNewsVideo(String newsId) {
+        return null;
+    }
+
+    public static String getNewsAudio(String newsId) {
+        return API_BASE + newsId + "/" + newsId + ".mp3";
+    }
+
+    public static Map<String, List<NewsWord>> getNewsDictionary(String newsId) {
+        Map<String, List<NewsWord>> dict = new LinkedHashTreeMap<>();
+        String requestUrl = String.format(API_DICT, newsId, newsId, (new Date()).getTime());
+        Response response = HttpUtil.sendSynchronousOkHttpRequest(requestUrl);
+        if (response != null) {
+            try {
+                Gson gson = new Gson();
+                JSONObject jsonObject = (new JSONObject(response.body().string())).getJSONObject("reikai").getJSONObject("entries");
+                JSONArray names = jsonObject.names();
+                for (int i = 0; i < names.length(); i++) {
+                    String name = names.getString(i);
+                    List<NewsWord> defs = gson.fromJson(jsonObject.getString(name), new TypeToken<List<NewsWord>>(){}.getType());
+                    dict.put(name, defs);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return dict;
     }
 
     /**

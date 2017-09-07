@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.upwzr.easynews.json.Word;
+import com.upwzr.easynews.json.DictWord;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -12,13 +12,9 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
 import okhttp3.Response;
 
 /**
@@ -32,8 +28,8 @@ public class Dict {
     public static final String ENCODING = "utf-8";
     private static final String TAG = "Dict";
 
-    public static List<Word> query(String word, String type) {
-        List<Word> result = new ArrayList<>();
+    public static List<DictWord> query(String word, String type) {
+        List<DictWord> result = new ArrayList<>();
         try {
             String encodedWord = URLEncoder.encode(word, ENCODING);
             String requestUrl = String.format(JP_API, encodedWord, type);
@@ -41,7 +37,7 @@ public class Dict {
             if (response != null) {
                 try {
 //                    Log.d(TAG, response.body().string());
-                    result = (new Gson()).fromJson(response.body().string(), new TypeToken<List<Word>>(){}.getType());
+                    result = (new Gson()).fromJson(response.body().string(), new TypeToken<List<DictWord>>(){}.getType());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -52,12 +48,12 @@ public class Dict {
         return result;
     }
 
-    public static Word handleJsonResponse(String response) {
+    public static DictWord handleJsonResponse(String response) {
         try {
             JSONObject jsonObject = (new JSONArray(response)).getJSONObject(0);
             Gson gson = new Gson();
-            Word word = gson.fromJson(jsonObject.toString(), Word.class);
-            return word;
+            DictWord dictWord = gson.fromJson(jsonObject.toString(), DictWord.class);
+            return dictWord;
         } catch (Exception e) {
             e.printStackTrace();
         }

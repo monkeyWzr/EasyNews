@@ -6,30 +6,30 @@ import com.google.gson.annotations.SerializedName;
  * Created by wzr on 2017/8/30.
  */
 
-public class Word {
-    public String pinYin;
+public class DictWord {
+    private String pinYin;
 
-    public String PronounceJp;
+    private String PronounceJp;
 
-    public String Tone;
+    private String Tone;
 
     @SerializedName("Word")
-    public String Text;
+    private String Text;
 
-    public String Comment;
+    private String Comment;
 
-    public String Pronounce;
+    private String Pronounce;
 
     @SerializedName("TtsUrl")
-    public String Mp3Url;
+    private String Mp3Url;
 
-    public boolean IsAddWord;
+    private boolean IsAddWord;
 
-    public long WordId;
+    private long WordId;
 
-    public String FromLang;
+    private String FromLang;
 
-    public String ToLang;
+    private String ToLang;
 
     public String getPinYin() {
         return pinYin;
