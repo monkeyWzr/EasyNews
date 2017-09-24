@@ -1,7 +1,10 @@
 package com.upwzr.easynews;
 
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
 import com.upwzr.easynews.json.News;
@@ -17,21 +20,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-//                List<Word> wordList = Dict.query("私", Dict.TYPE_JAPANESE_TO_CHINESE);
-//                for (Word word : wordList)
-//                    Log.d("MainActivity", word.PronounceJp);
-//                Map<String, List<NewsWord>> dict = EasyNews.getNewsDictionary("k10011127161000");
-//                for (Map.Entry<String, List<NewsWord>> entry : dict.entrySet()) {
-//                    Log.d("MainActivity", entry.getKey() + ": " + entry.getValue());
-//                }
-                EasyNews.Article article = EasyNews.getNewsArticle("k10011127161000");
-                Log.d("MainActivity", article.getAudio());
-            }
-        }).start();
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+        setupViewPager(viewPager);
 
-//
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        tabLayout.setupWithViewPager(viewPager);
+    }
+
+    private void setupViewPager(ViewPager viewPager) {
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        viewPagerAdapter.addFragment(new NewsListFragment(), "TAB1");
+        viewPagerAdapter.addFragment(new NewsListFragment(), "TAB2");
+        viewPager.setAdapter(viewPagerAdapter);
     }
 }

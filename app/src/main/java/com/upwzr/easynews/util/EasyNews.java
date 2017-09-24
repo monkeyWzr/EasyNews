@@ -157,6 +157,14 @@ public class EasyNews {
         return null;
     }
 
+    public static String getNewsImage(News news) {
+        String imageUri = news.getWebImageUri();
+        if (imageUri.isEmpty()) {
+            imageUri = EasyNews.API_BASE + news.getNewsId() + "/" + news.getEasyImageUri();
+        }
+        return imageUri;
+    }
+
     public static String getNewsVideo(String newsId) {
         return null;
     }
